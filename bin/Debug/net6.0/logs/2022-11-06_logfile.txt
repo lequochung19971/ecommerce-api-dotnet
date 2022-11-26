@@ -1,0 +1,5 @@
+2022-11-06 15:45:16.1990 INFO getCategories
+2022-11-06 15:53:36.2134 INFO getCategories
+2022-11-06 15:59:38.4378 ERROR System.ArgumentNullException: Value cannot be null. (Parameter 'id')
+   at Ecommerce.Repositories.CategoryRepository.UpdateCategoryAsync(Int32 id, Category category) in /Users/lequochung/Personal/my-projects/chill-with-c#/Ecommerce/Repositories/CategoryRepository.cs:line 52
+   at Ecommerce.Controllers.CategoryController.updateCategory(Int32 id, UpdateCategoryDto categoryDto) in /Users/lequochung/Personal/my-projects/chill-with-c#/Ecommerce/Controllers/CategoryController.cs:line 88
