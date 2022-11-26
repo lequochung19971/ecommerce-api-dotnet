@@ -16,8 +16,14 @@ public static class ExceptionMiddlewareExtensions
         app.UseExceptionHandler("/error");
         app.Map("/error", (HttpContext context) =>
         {
-            AppException? exception = context.Features.Get<IExceptionHandlerFeature>().Error as AppException;
-            return Results.Problem(type: exception?.Type, statusCode: exception?.Status, title: exception?.Title, detail: exception?.Detail, instance: exception?.Instance);
+            var exception = context.Features.Get<IExceptionHandlerFeature>().Error;
+            if (exception is AppException)
+            {
+                AppException appException = exception as AppException;
+                return Results.Problem(type: appException?.Type, statusCode: appException?.Status, title: appException?.Title, detail: appException?.Detail, instance: appException?.Instance);
+            }
+
+            return Results.Problem(statusCode: (int)HttpStatusCode.InternalServerError, detail: exception?.ToString());
         });
     }
 };

@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Ecommerce.Dtos;
 using Ecommerce.Entities;
+using Ecommerce.Exceptions;
 using Ecommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -34,8 +36,11 @@ public class CategoryController : ControllerBase
         }
         catch (System.Exception exception)
         {
-            return BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            };
         }
 
     }
@@ -50,8 +55,11 @@ public class CategoryController : ControllerBase
         }
         catch (System.Exception exception)
         {
-            return BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            };
         }
 
     }
@@ -67,8 +75,11 @@ public class CategoryController : ControllerBase
         }
         catch (System.Exception exception)
         {
-            return BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            };
         }
 
     }
@@ -86,10 +97,17 @@ public class CategoryController : ControllerBase
         {
             if (exception is ArgumentNullException)
             {
-                return NotFound(exception.ToString());
+                throw new AppException()
+                {
+                    Status = (int)HttpStatusCode.NotFound,
+                    Detail = exception.ToString()
+                };
             }
-            BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            };
         }
     }
 
@@ -103,8 +121,11 @@ public class CategoryController : ControllerBase
         }
         catch (System.Exception exception)
         {
-            BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            };
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Ecommerce.Dtos;
@@ -26,16 +27,16 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ExpandoObject>>> getProducts([FromQuery] ProductParams productParams)
+    public async Task<ActionResult<PagedData<List<ProductDto>>>> getProducts([FromQuery] ProductParams productParams)
     {
         try
         {
             var data = await _repo.GetProductsAsync(productParams);
             // throw new Exception("Le Quoc Hung");
-            return Ok(new
+            return Ok(new PagedData<List<ProductDto>>()
             {
-                data = _mapper.Map<List<ProductDto>>(data),
-                data.TotalCount,
+                Data = _mapper.Map<List<ProductDto>>(data),
+                TotalCount = data.TotalCount,
             });
         }
         catch (System.Exception exception)
@@ -55,8 +56,11 @@ public class ProductController : ControllerBase
         }
         catch (System.Exception exception)
         {
-            return BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            };
         }
     }
 
@@ -71,10 +75,12 @@ public class ProductController : ControllerBase
         }
         catch (System.Exception exception)
         {
-            return BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            };
         }
-
     }
 
     [HttpDelete("{id}")]
@@ -87,8 +93,11 @@ public class ProductController : ControllerBase
         }
         catch (System.Exception exception)
         {
-            return BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            };
         }
     }
 
@@ -104,10 +113,17 @@ public class ProductController : ControllerBase
         {
             if (exception is ArgumentNullException)
             {
-                return NotFound(exception.ToString());
+                throw new AppException()
+                {
+                    Status = (int)HttpStatusCode.NotFound,
+                    Detail = exception.ToString()
+                };
             }
-            return BadRequest(exception.ToString());
-            throw;
+            throw new AppException()
+            {
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = exception.ToString()
+            }; ;
         }
     }
 }

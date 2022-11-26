@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Ecommerce.Data;
 using Ecommerce.Entities;
 using Ecommerce.Exceptions;
@@ -10,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
+
 builder.Services.AddDbContext<DataContext>(options =>
 {
     ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());

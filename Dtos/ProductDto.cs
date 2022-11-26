@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ecommerce.Entities;
+using Ecommerce.Enums;
 
 namespace Ecommerce.Dtos
 {
@@ -10,6 +11,7 @@ namespace Ecommerce.Dtos
     {
         public int Id { set; get; }
         public string Name { set; get; }
+        public ProductTypes type { set; get; }
         public string Desc { set; get; }
         public string Sku { set; get; }
         public string Test { set; get; }

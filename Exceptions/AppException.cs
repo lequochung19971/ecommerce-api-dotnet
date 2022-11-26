@@ -14,12 +14,4 @@ public class AppException : Exception
     public int? Status { get; set; }
     public string? Detail { get; set; }
     public string? Instance { get; set; }
-    public AppException(ProblemDetails ex)
-    {
-        Type = ex.Type;
-        Title = ex.Title;
-        Status = ex.Status;
-        Detail = ex.Detail;
-        Instance = ex.Instance;
-    }
 }

@@ -1,13 +1,12 @@
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 using Castle.Components.DictionaryAdapter;
 
-namespace Ecommerce.Enums
+namespace Ecommerce.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum SortDirections
 {
-    public enum SortDirections
-    {
-        // [Description("ASC")]
-        ASC,
-        // [Description("DESC")]
-        DESC
-    }
+    ASC,
+    DESC
 }
