@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Ecommerce.Enums;
 
@@ -21,5 +22,7 @@ namespace Ecommerce.Entities
         public decimal Price { set; get; }
         public int CategoryId { set; get; }
         public virtual Category Category { set; get; }
+        [JsonIgnore]
+        public virtual List<FileModel> Images { get; set; }
     }
 }

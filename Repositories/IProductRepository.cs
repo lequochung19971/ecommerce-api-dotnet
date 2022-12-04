@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 using Ecommerce.Entities;
 
 namespace Ecommerce.Repositories;
-public interface IProductRepository
+public interface IProductRepository : IBaseRepository<Product>
 {
-    public Task<PagedList<Product>> GetProductsAsync(ProductParams productParams);
-    public Task<List<Product>> GetProductsByCategoryIdAsync(int CategoryId);
-    public Task<Product> GetProductAsync(int id);
-    public Task CreateProductAsync(Product product);
-    public Task UpdateProductAsync(int id, Product product);
-    public Task DeleteProductAsync(int id);
+    public Task<PagedList<Product>> QueryAsync(ProductParams productParams);
 }

@@ -4,6 +4,7 @@ using Ecommerce.Entities;
 using Ecommerce.Exceptions;
 using Ecommerce.Extensions;
 using Ecommerce.Repositories;
+using Ecommerce.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
+
+// Service
+builder.Services.AddScoped<IAzureStorageAccountService, AzureStorageAccountService>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

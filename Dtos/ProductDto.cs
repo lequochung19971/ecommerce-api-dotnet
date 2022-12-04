@@ -14,8 +14,8 @@ namespace Ecommerce.Dtos
         public ProductTypes type { set; get; }
         public string Desc { set; get; }
         public string Sku { set; get; }
-        public string Test { set; get; }
+        public List<FileModelDto> Images { set; get; }
         public decimal Price { set; get; }
-        public Category Category { set; get; }
+        public string CategoryId { set; get; }
     }
 }

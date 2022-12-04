@@ -9,6 +9,7 @@ using Ecommerce.Entities;
 using Ecommerce.Exceptions;
 using Ecommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Ecommerce.Controllers;
@@ -31,14 +32,14 @@ public class CategoryController : ControllerBase
     {
         try
         {
-            var categories = await _repo.GetCategoriesAsync();
-            return Ok(_mapper.Map<CategoryDto[]>(categories));
+            var categories = await _repo.FindAll().ToListAsync();
+            return Ok(_mapper.Map<List<CategoryDto>>(categories));
         }
         catch (System.Exception exception)
         {
             throw new AppException()
             {
-                Status = (int)HttpStatusCode.BadRequest,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Detail = exception.ToString()
             };
         }
@@ -50,14 +51,14 @@ public class CategoryController : ControllerBase
     {
         try
         {
-            var category = await _repo.GetCategoryAsync(id);
+            var category = await _repo.FindByCondition(c => c.Id == id).FirstOrDefaultAsync();
             return Ok(_mapper.Map<CategoryDto>(category));
         }
         catch (System.Exception exception)
         {
             throw new AppException()
             {
-                Status = (int)HttpStatusCode.BadRequest,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Detail = exception.ToString()
             };
         }
@@ -70,14 +71,15 @@ public class CategoryController : ControllerBase
         try
         {
             var category = _mapper.Map<Category>(categoryDto);
-            await _repo.CreateCategoryAsync(category);
+            _repo.Create(category);
+            await _repo.SaveChangesAsync();
             return CreatedAtAction(nameof(getCategory), new { Id = category.Id }, new { Id = category.Id });
         }
         catch (System.Exception exception)
         {
             throw new AppException()
             {
-                Status = (int)HttpStatusCode.BadRequest,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Detail = exception.ToString()
             };
         }
@@ -87,25 +89,22 @@ public class CategoryController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult> updateCategory(int id, UpdateCategoryDto categoryDto)
     {
-        var category = _mapper.Map<Category>(categoryDto);
         try
         {
-            await _repo.UpdateCategoryAsync(id, category);
+            var category = _repo.FindByCondition(c => c.Id == id).FirstOrDefault();
+            if (category == null)
+            {
+                return NotFound("Category Not Found");
+            }
+            _repo.Update(_mapper.Map<Category>(categoryDto));
+            await _repo.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception exception)
         {
-            if (exception is ArgumentNullException)
-            {
-                throw new AppException()
-                {
-                    Status = (int)HttpStatusCode.NotFound,
-                    Detail = exception.ToString()
-                };
-            }
             throw new AppException()
             {
-                Status = (int)HttpStatusCode.BadRequest,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Detail = exception.ToString()
             };
         }
@@ -116,14 +115,20 @@ public class CategoryController : ControllerBase
     {
         try
         {
-            await _repo.DeleteCategoryAsync(id);
+            var category = _repo.FindByCondition(c => c.Id == id).FirstOrDefault();
+            if (category == null)
+            {
+                return NotFound("Category Not Found");
+            }
+            _repo.Delete(category);
+            await _repo.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception exception)
         {
             throw new AppException()
             {
-                Status = (int)HttpStatusCode.BadRequest,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Detail = exception.ToString()
             };
         }

@@ -13,6 +13,7 @@ public class DataContext : DbContext
     public DataContext(DbContextOptions<DataContext> options) : base(options) { }
     public DbSet<Product> products { set; get; }
     public DbSet<Category> categories { set; get; }
+    public DbSet<FileModel> files { set; get; }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ChangeTracker.SetCreatedAndUpdatedDate();
@@ -40,8 +41,10 @@ public class DataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Configure more for a entity model
         modelBuilder.ApplyConfiguration(new EntityMapBase<Product>());
         modelBuilder.ApplyConfiguration(new EntityMapBase<Category>());
+        modelBuilder.ApplyConfiguration(new EntityMapBase<FileModel>());
     }
     private void MarkCreatedAndUpdatedDate()
     {

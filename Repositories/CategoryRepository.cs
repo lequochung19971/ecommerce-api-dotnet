@@ -8,18 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        private readonly DataContext _context;
-
-        public CategoryRepository(DataContext context)
+        public CategoryRepository(DataContext context) : base(context)
         {
-            _context = context;
         }
+
         public async Task CreateCategoryAsync(Category category)
         {
             _context.categories.Add(category);
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteCategoryAsync(int id)
@@ -31,7 +28,6 @@ namespace Ecommerce.Repositories
             }
 
             _context.Remove(currentCategory);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Category>> GetCategoriesAsync()
@@ -54,7 +50,6 @@ namespace Ecommerce.Repositories
 
             currentCategory.Name = category.Name;
             currentCategory.Desc = category.Desc;
-            await _context.SaveChangesAsync();
         }
     }
 }

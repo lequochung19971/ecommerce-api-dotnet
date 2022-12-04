@@ -14,5 +14,6 @@ public class ProductsProfile : Profile
     {
         CreateMap<Product, ProductDto>().ForMember(p => p.Sku, opt => opt.Ignore());
         CreateMap<Product, CreateProductDto>().ReverseMap().ForMember(p => p.Sku, option => option.MapFrom(p => p.Name.toKebabCase()));
+        CreateMap<UpdateProductDto, Product>().ForMember(p => p.Images, opt => opt.Ignore()).ForMember(p => p.Sku, option => option.MapFrom(p => p.Name.toKebabCase()));
     }
 }

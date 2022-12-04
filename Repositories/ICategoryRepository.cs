@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Ecommerce.Entities;
 
 namespace Ecommerce.Repositories;
-public interface ICategoryRepository
+public interface ICategoryRepository : IBaseRepository<Category>
 {
     public Task<List<Category>> GetCategoriesAsync();
     public Task<Category> GetCategoryAsync(int id);
